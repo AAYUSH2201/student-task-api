@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JDK17'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -36,8 +40,8 @@ pipeline {
                 echo 'Running SonarQube code quality analysis...'
                 withSonarQubeEnv('SonarQube') {
                     script {
-                    def scannerHome = tool 'SonarScanner'
-                    bat "\"${scannerHome}\\bin\\sonar-scanner.bat\""
+                        def scannerHome = tool 'SonarScanner'
+                        bat "\"${scannerHome}\\bin\\sonar-scanner.bat\""
                     }
                 }
             }
