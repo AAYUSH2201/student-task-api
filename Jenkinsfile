@@ -35,7 +35,10 @@ pipeline {
             steps {
                 echo 'Running SonarQube code quality analysis...'
                 withSonarQubeEnv('SonarQube') {
-                bat 'sonar-scanner'
+                    script {
+                    def scannerHome = tool 'SonarScanner'
+                    bat "\"${scannerHome}\\bin\\sonar-scanner.bat\""
+                    }
                 }
             }
         }
