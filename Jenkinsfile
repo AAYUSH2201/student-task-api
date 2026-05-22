@@ -31,6 +31,15 @@ pipeline {
             }
         }
 
+        stage('Code Quality Analysis') {
+            steps {
+                echo 'Running SonarQube code quality analysis...'
+                withSonarQubeEnv('SonarQube') {
+                bat 'sonar-scanner'
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 echo 'Building Docker image...'
