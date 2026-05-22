@@ -1,21 +1,18 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS 20'
-    }
-
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Checking out code from GitHub...'
+                echo 'Checking out source code...'
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing Node.js dependencies...'
+                echo 'Installing dependencies...'
                 bat 'npm install'
             }
         }
@@ -29,19 +26,29 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running automated tests...'
+                echo 'Running tests...'
                 bat 'npm test'
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
+
+                bat 'docker build -t student-task-api:%BUILD_NUMBER% .'
+            }
+        }
+
     }
 
     post {
+
         success {
-            echo 'Initial Jenkins pipeline completed successfully.'
+            echo 'Pipeline completed successfully.'
         }
 
         failure {
-            echo 'Pipeline failed. Check the console output.'
+            echo 'Pipeline failed.'
         }
     }
 }
