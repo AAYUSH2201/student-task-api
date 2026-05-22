@@ -55,6 +55,13 @@ pipeline {
             }
         }
 
+        stage('Security Scan') {
+            steps {
+                echo 'Running Docker image vulnerability scan using Trivy...'
+                bat 'trivy image student-task-api:%BUILD_NUMBER% --severity HIGH,CRITICAL --exit-code 0'
+            }
+        }
+
     }
 
     post {
